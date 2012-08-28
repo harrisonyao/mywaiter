@@ -18,7 +18,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  * @author Harrison
  * 
  */
-public class QRCodeGenarator {
+public class QRCodeHandler {
 
 	/**
 	 * 
