@@ -1,0 +1,49 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+<xwork>
+    <package name="mywaiter-default" namespace="/" extends="webwork-default">
+        <interceptors>
+    		<interceptor-stack name="emDefaultStack">
+    			<interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="model-driven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params"/>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+    		</interceptor-stack>
+    	</interceptors>
+        
+        <default-action-ref name="index"/>
+
+        <global-results>
+            <result name="error" type="freemarker">
+                /template/common/error.ftl
+            </result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.RuntimeException" result="error"/>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+        
+        
+        <action name="genQRCode" method="getGenaratorPage" class="cn.com.mywaiter.web.action.GenQRCodeAction">
+        	<result name="success" type="freemarker">/template/code-input.ftl</result>
+        </action>
+        
+         <action name="genQRCodeExec" method="genarateQRCodeJPG" class="cn.com.mywaiter.web.action.GenQRCodeAction">
+        	<result name="success" type="freemarker">/template/common.ftl</result>
+        </action>
+    </package>
+</xwork>

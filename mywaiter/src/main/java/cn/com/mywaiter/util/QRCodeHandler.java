@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -29,6 +31,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  * 
  */
 public class QRCodeHandler {
+	
+	private String qrCodePicFolder;
 
 	/**
 	 * 
@@ -52,8 +56,19 @@ public class QRCodeHandler {
 					width == null ? defaultWidth : width.intValue(),
 					height == null ? defaultHeight : height.intValue(), hints);
 
-			MatrixToImageWriter
-					.writeToFile(bitMatrix, "png", new File(imgPath));
+			if (StringUtils.isNotBlank(imgPath)) {
+				StringBuffer pathSB = new StringBuffer();
+				pathSB.append(imgPath);
+				pathSB.delete(imgPath.lastIndexOf(System
+						.getProperty("file.separator")), imgPath.length()); // 去除文件路径上的文件名路径
+				File pathFile = new File(pathSB.toString());
+				if(!pathFile.exists()){
+					pathFile.mkdirs(); // 创建路径
+				}
+			}
+
+			MatrixToImageWriter.writeToFile(bitMatrix, "jpeg",
+					new File(imgPath));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,5 +102,19 @@ public class QRCodeHandler {
 		}
 		return null;
 
+	}
+
+	/**
+	 * @return the qrCodePicFolder
+	 */
+	public String getQrCodePicFolder() {
+		return qrCodePicFolder;
+	}
+
+	/**
+	 * @param qrCodePicFolder the qrCodePicFolder to set
+	 */
+	public void setQrCodePicFolder(String qrCodePicFolder) {
+		this.qrCodePicFolder = qrCodePicFolder;
 	}
 }
